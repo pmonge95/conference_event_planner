@@ -23,7 +23,9 @@ const ConferenceEvent = () => {
 
     const handleAddToCart = (index) => {
         if (venueItems[index].name === "Auditorium Hall (Capacity:200)" && venueItems[index].quantity >= 3) {
-          return; 
+            return; 
+        } else if (venueItems[index].quantity >= 10) {
+            return; 
         }
         dispatch(incrementQuantity(index));
     };
