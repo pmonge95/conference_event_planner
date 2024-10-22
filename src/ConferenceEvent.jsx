@@ -3,6 +3,8 @@ import "./ConferenceEvent.css";
 import TotalCost from "./TotalCost";
 import { useSelector, useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity } from "./venueSlice";
+import { incrementAvQuantity, decrementAvQuantity } from "./avSlice";
+
 const ConferenceEvent = () => {
     const [showItems, setShowItems] = useState(false);
     const [numberOfPeople, setNumberOfPeople] = useState(1);
@@ -22,19 +24,20 @@ const ConferenceEvent = () => {
           return; 
         }
         dispatch(incrementQuantity(index));
-      };
+    };
     
-      const handleRemoveFromCart = (index) => {
+    const handleRemoveFromCart = (index) => {
         if (venueItems[index].quantity > 0) {
           dispatch(decrementQuantity(index));
         }
-      };
+    };
     const handleIncrementAvQuantity = (index) => {
+        dispatch(incrementAvQuantity(index));
     };
-
+    
     const handleDecrementAvQuantity = (index) => {
+        dispatch(decrementAvQuantity(index));
     };
-
     const handleMealSelection = (index) => {
        
     };
@@ -51,21 +54,26 @@ const ConferenceEvent = () => {
     const calculateTotalCost = (section) => {
         let totalCost = 0;
         if (section === "venue") {
-          venueItems.forEach((item) => {
-            totalCost += item.cost * item.quantity;
-          });
+            venueItems.forEach((item) => {
+                totalCost += item.cost * item.quantity;
+            });
+        } else if (section === "av") {
+            avItems.forEach((item) => {
+                totalCost += item.cost * item.quantity;
+            });
         }
         return totalCost;
-      };
+    };
+    const avTotalCost = calculateTotalCost("av");
     const venueTotalCost = calculateTotalCost("venue");
 
     const navigateToProducts = (idType) => {
         if (idType == '#venue' || idType == '#addons' || idType == '#meals') {
-          if (showItems) { // Check if showItems is false
-            setShowItems(!showItems); // Toggle showItems to true only if it's currently false
-          }
+            if (showItems) { // Check if showItems is false
+                setShowItems(!showItems); // Toggle showItems to true only if it's currently false
+            }
         }
-      }
+    }
 
     return (
         <>
@@ -158,7 +166,7 @@ const ConferenceEvent = () => {
                                     </div>
                                 ))}   
                             </div>
-                            <div className="total_cost">Total Cost:</div>
+                            <div className="total_cost">Total Cost: {avTotalCost}</div>
 
                         </div>
 
